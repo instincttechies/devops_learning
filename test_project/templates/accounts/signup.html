@@ -1,0 +1,21 @@
+<!-- signup.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign Up</button>
+    </form>
+    {% if form.errors %}
+        <script>
+            alert("There are errors in the form. Please check and try again.");
+        </script>
+    {% endif %}
+</body>
+</html>
