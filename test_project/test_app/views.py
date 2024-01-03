@@ -1,9 +1,35 @@
+from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import Item
 from django.contrib.auth.decorators import login_required
 
+def home(request):
+    if request.user.is_authenticated:
+        username = request.user.username
+        items = Item.objects.filter(user=request.user)
+
+        if request.method == 'POST':
+            for item in items:
+                item_name = request.POST.get(f'item{item.id}')
+                item_price = request.POST.get(f'price{item.id}')
+
+                item.name = item_name
+                item.price = item_price
+                item.save()
+
+            new_item_name = request.POST.get('new_item_name')
+            new_item_price = request.POST.get('new_item_price')
+            if new_item_name and new_item_price:
+                new_item = Item.objects.create(user=request.user, name=new_item_name, price=new_item_price)
+            return redirect('home')
+        else:
+            context = {'welcome_message': f'Welcome {username}', 'items':items}
+    else:
+        context = {'welcome_message': 'Welcome to the Home Page'}
+
+    return render(request, 'home.html', context)
 
 def signup(request):
     if request.method == 'POST':
@@ -26,7 +52,6 @@ def summary(request):
 
     return render(request, 'summary.html', {'total_price': total_price})
 
-@login_required
 def dashboard(request):
     items = Item.objects.filter(user=request.user)
 
@@ -47,14 +72,21 @@ def dashboard(request):
         return redirect('dashboard')
 
     return render(request, 'dashboard.html', {'items': items})
-@login_required
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            # Process login data if valid
-            # For example: auth.login(request, user)
-            return redirect('dashboard')  # Redirect to a 'dashboard' or any valid view after login
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # Redirect to home page after login
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})
+
+def signout(request):
+    logout(request)
+    return redirect('home')
