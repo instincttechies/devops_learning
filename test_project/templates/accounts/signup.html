@@ -4,18 +4,136 @@
 <html>
 <head>
     <title>Sign Up</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 0;
+        }
+        form {
+            width: 800px;
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .container {
+          padding-top: 100px;
+          display:flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="submit"]{
+            width: calc(100% - 20ox);
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+        }
+        .form-field {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .form-info {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        h1 {
+          color: #333;
+          font-size: 36px;
+          margin-bottom: 30px;
+        }
+        .btn {
+          display: inline-block;
+          padding: 10px 20px;
+          margin: 0 10px;
+          font-size: 16px;
+          text-decoration: none;
+          color: #fff;
+          border-radius: 5px;
+        }
+        .login {
+          background-color: #3498db;
+        }
+        .register {
+          background-color: #2ecc71;
+        }
+        .summary {
+          background-color: #e67e22;
+        }
+        .summary:hover{
+            background-color: #d35400;
+        }
+        .logout{
+            background-color: #e74c3c;
+        }
+        .logout:hover{
+            background-color: #2ecc71;
+        }
+        .newitem{
+            background-color: #3498db;
+        }
+        .newitem:hover{
+            background-color: #2ecc71;
+        }
+        .button-group{
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .table-container{
+            margin: auto;
+            width: %;60
+        }
+      </style>
 </head>
 <body>
-    <h1>Sign Up</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign Up</button>
-    </form>
-    {% if form.errors %}
-        <script>
-            alert("There are errors in the form. Please check and try again.");
-        </script>
-    {% endif %}
+    <div class="container">
+        <h1>Sign Up</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-field">
+                <label for="id_username" class="form-label">Username:</label>
+                {{ form.username }}
+                <p class="form-info">Letters, digits and @/./+/-/_ only.</p>
+            </div>
+            <div class="form-field">
+                <label for="id_password1" class="form-label">Password:</label>
+                {{ form.password1 }}
+                <p class="form-info"></p>
+            </div>
+            <div class="form-field">
+                <label for="id_password2" class="form-label">Confirm Password:</label>
+                {{ form.password2 }}
+                <p class="form-info">Confirm Password should be same as Password</p>
+            </div>
+            <input type="submit" value="Sign Up">
+        </form>
+        {% if form.errors %}
+            <script>
+                alert("There are errors in the form. Please check and try again.");
+            </script>
+        {% endif %}
+    </div>
 </body>
 </html>
