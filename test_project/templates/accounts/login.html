@@ -41,7 +41,6 @@
 <body>
     <form class="form-login" method="post">
         {% csrf_token %}
-        <h1 class="h3 mb-3 font-weight-normal text-center">Login</h1>
         <div class="form-group">
             {{ form.username.label_tag }}
             {{ form.username }}
